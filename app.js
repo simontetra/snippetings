@@ -140,3 +140,40 @@ $("#compose").addEventListener("submit", async e => {
 drawSettingChips(); drawFilters(); refresh();
 setInterval(() => { if (!document.hidden) refresh() }, 60000);
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+
+/* Get the app: real install where the browser allows it, simple steps elsewhere. */
+(() => {
+  const btn = $("#getapp"), sheet = $("#howto"), steps = $("#howto-steps");
+  const installed = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (installed) return;
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  let deferred = null;
+
+  const SHARE = '<svg class="shareicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+  function show(){
+    if (isIOS && !/Safari/.test(ua) || /CriOS|FxiOS|EdgiOS/.test(ua) && isIOS){
+      steps.innerHTML = `<li>Tap the <b>Share</b> button ${SHARE} in your browser.</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li>`;
+    } else if (isIOS){
+      steps.innerHTML = `<li>Tap the <b>Share</b> button ${SHARE} at the bottom of Safari.</li><li>Scroll down and choose <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li>`;
+    } else if (isAndroid){
+      steps.innerHTML = `<li>Tap the <b>⋮</b> menu at the top right of your browser.</li><li>Choose <b>Install app</b> or <b>Add to Home screen</b>.</li>`;
+    } else {
+      steps.innerHTML = `<li>On your phone, go to <b>www.snippetings.com</b>.</li><li>iPhone: tap <b>Share</b> ${SHARE}, then <b>Add to Home Screen</b>.<br>Android: tap <b>⋮</b>, then <b>Install app</b>.</li>`;
+    }
+    sheet.hidden = false; $("#howto-close").focus();
+  }
+  const hide = () => { sheet.hidden = true; btn.focus() };
+  $("#howto-close").onclick = hide;
+  sheet.addEventListener("click", e => { if (e.target === sheet) hide() });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !sheet.hidden) hide() });
+
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; btn.hidden = false });
+  window.addEventListener("appinstalled", () => { btn.hidden = true; deferred = null });
+  btn.onclick = async () => {
+    if (deferred){ deferred.prompt(); const r = await deferred.userChoice; deferred = null; if (r.outcome === "accepted") btn.hidden = true }
+    else show();
+  };
+  btn.hidden = false;
+})();

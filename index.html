@@ -28,6 +28,18 @@
   <header>
     <h1 class="mark"><span>Snippet</span>ings</h1>
     <p class="tag">Little bits of overheard life, from buses, queues and waiting rooms. Funny, human, never unkind. Always anonymous.</p>
+    <button class="getapp" id="getapp" type="button" hidden>
+      <img src="/icons/icon-192.png" alt="" width="28" height="28">
+      <span>Get the app <small>Free · no account needed</small></span>
+    </button>
+    <div class="howto" id="howto" hidden>
+      <div class="howto-card" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+        <h2 id="howto-title">Add Snippetings to your phone</h2>
+        <ol id="howto-steps"></ol>
+        <p class="howto-note">It then opens from your home screen like any other app.</p>
+        <button class="btn" id="howto-close" type="button">Got it</button>
+      </div>
+    </div>
   </header>
 
   <form id="compose" novalidate>
@@ -46,7 +58,7 @@
       <div class="field"><label class="label" for="when">When (optional)</label>
         <input type="text" id="when" maxlength="30" placeholder="This morning"></div>
     </div>
-    <p class="rules">No names, no swearing, nothing that pokes fun at who someone is. Leave out anything that could identify a person.</p>
+    <p class="rules">No names, no swearing, nothing that pokes fun at who someone is. Leave out anything that could identify a person. By sharing, you confirm your snippet is legal and agree to the <a href="/terms.html">terms and house rules</a>.</p>
     <div class="foot">
       <span class="count" id="count">0 / 280</span>
       <button class="btn" id="send" type="submit">Share snippet</button>
@@ -69,6 +81,7 @@
 
   <footer>
     <p>Snippetings is anonymous. We don't ask for names or accounts. Spotted something unkind? Tap <em>Report</em> and it's taken down after a few reports.</p>
+    <p>Snippets are posted by visitors and aren't written or endorsed by Snippetings. Everything posted must be legal. <a href="/terms.html">Terms and house rules</a></p>
   </footer>
 </div>
 <script src="/config.js"></script>

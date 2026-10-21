@@ -1,3 +1,4 @@
+[hidden]{display:none!important}
 
 /* Layout: one narrow column, like a pocket notebook. Each snippet is a quote with a bus-ticket stub saying where it was heard. */
 :root{
@@ -79,3 +80,23 @@ textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--link);ou
 footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--muted);font-size:.85rem}
 footer p{margin:0;max-width:60ch}
 .more{justify-self:start}
+
+/* Get the app */
+.getapp{justify-self:start;display:flex;align-items:center;gap:10px;margin-top:10px;padding:8px 16px 8px 8px;
+  background:var(--card);color:var(--ink);border:1px solid var(--rule);border-radius:12px;cursor:pointer;text-align:left}
+.getapp:hover{border-color:var(--ticket)}
+.getapp img{border-radius:7px;display:block}
+.getapp span{display:grid;font:500 1rem/1.15 var(--display)}
+.getapp small{font:.72rem/1.3 var(--mono);color:var(--muted)}
+.howto{position:fixed;inset:0;z-index:20;display:grid;align-items:end;justify-items:center;
+  background:color-mix(in srgb,var(--ink) 45%,transparent);
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.howto-card{background:var(--card);color:var(--ink);border-radius:14px;padding:22px;max-width:420px;width:100%;box-sizing:border-box;display:grid;gap:12px}
+.howto-card h2{font:500 1.2rem/1.2 var(--display);margin:0}
+.howto-card ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.howto-card b{font-weight:600}
+.howto-note{margin:0;color:var(--muted);font-size:.9rem}
+.howto-card .btn{justify-self:end}
+.shareicon{display:inline-block;vertical-align:-3px;width:16px;height:16px}
+.rules a,footer a{color:var(--link)}
+footer{display:grid;gap:8px}
