@@ -75,16 +75,71 @@ function render(){
     smile.setAttribute("aria-pressed", !!r.smile);
     smile.textContent = "☺ " + (d.smiles || 0); smile.title = "This made me smile";
     smile.onclick = () => react(d, "smile");
-    const rep = document.createElement("button"); rep.type = "button"; rep.className = "act report" + (r.report ? " done" : "");
-    rep.textContent = r.report ? "Reported" : "Report"; rep.disabled = !!r.report;
-    rep.onclick = () => {
-      if (rep.dataset.sure){ react(d, "report") }
-      else { rep.dataset.sure = "1"; rep.textContent = "Report as unkind?"; }
-    };
-    acts.append(smile, rep);
+    const share = document.createElement("button"); share.type = "button"; share.className = "act share";
+    share.innerHTML = SHARE_ICON + "<span>Share</span>"; share.title = "Share this snippet";
+    share.setAttribute("aria-expanded", openShare === d.id);
+    share.onclick = () => shareSnippet(d);
+    acts.append(smile, share);
+    if (reportMode){
+      const rep = document.createElement("button"); rep.type = "button"; rep.className = "act report" + (r.report ? " done" : "");
+      rep.textContent = r.report ? "Reported" : "Report this"; rep.disabled = !!r.report;
+      rep.onclick = () => {
+        if (rep.dataset.sure){ react(d, "report"); setReportMode(false) }
+        else { rep.dataset.sure = "1"; rep.textContent = "Tap again to report"; }
+      };
+      acts.append(rep);
+    }
     stub.append(t, w, acts);
-    li.append(q, stub); return li;
+    li.append(q, stub);
+    if (openShare === d.id) li.append(shareMenu(d));
+    if (d.id === linked) li.classList.add("linked");
+    li.id = "s-" + d.id;
+    return li;
   }));
+}
+
+/* Sharing: the phone's own share sheet where there is one, otherwise a small menu. */
+const SHARE_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+let openShare = null, reportMode = false;
+const linked = new URLSearchParams(location.search).get("s");
+const linkFor = d => "https://www.snippetings.com/?s=" + d.id;
+const textFor = d => "“" + d.text + "” — overheard" + (d.place ? " at " + d.place : "") + ", on Snippetings";
+
+async function shareSnippet(d){
+  if (navigator.share && matchMedia("(pointer: coarse)").matches){
+    try { await navigator.share({ title: "Snippetings", text: textFor(d), url: linkFor(d) }) } catch {}
+    return;
+  }
+  openShare = openShare === d.id ? null : d.id; render();
+}
+function shareMenu(d){
+  const box = document.createElement("div"); box.className = "sharemenu";
+  const u = encodeURIComponent(linkFor(d)), t = encodeURIComponent(textFor(d));
+  const links = [
+    ["WhatsApp", "https://wa.me/?text=" + t + "%20" + u],
+    ["Facebook", "https://www.facebook.com/sharer/sharer.php?u=" + u],
+    ["X", "https://twitter.com/intent/tweet?text=" + t + "&url=" + u],
+    ["Threads", "https://www.threads.net/intent/post?text=" + t + "%20" + u],
+    ["Email", "mailto:?subject=" + encodeURIComponent("Overheard on Snippetings") + "&body=" + t + "%0A%0A" + u],
+  ];
+  for (const [name, href] of links){
+    const a = document.createElement("a"); a.href = href; a.textContent = name; a.target = "_blank"; a.rel = "noopener";
+    box.append(a);
+  }
+  const copy = document.createElement("button"); copy.type = "button"; copy.textContent = "Copy link";
+  copy.onclick = async () => {
+    try { await navigator.clipboard.writeText(textFor(d) + " " + linkFor(d)); copy.textContent = "Copied" }
+    catch { copy.textContent = "Couldn't copy" }
+  };
+  box.append(copy);
+  return box;
+}
+
+function setReportMode(on){
+  reportMode = on;
+  $("#reportbar").hidden = !on;
+  render();
+  if (on) $("#feed").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 async function react(d, kind){
@@ -102,7 +157,13 @@ async function refresh(){
   if (!API){ $("#feed").replaceChildren(Object.assign(document.createElement("li"), { className: "empty", textContent: "Snippetings is being set up. Check back soon." })); return }
   try {
     docs = await api("snippets?select=id,text,setting,place,heard_when,smiles,created_at&status=eq.live&order=created_at.desc&limit=300");
+    if (linked && /^[0-9a-f-]{36}$/.test(linked)){
+      let hit = docs.find(d => d.id === linked);
+      if (!hit){ const one = await api("snippets?select=id,text,setting,place,heard_when,smiles,created_at&status=eq.live&id=eq." + linked).catch(() => []); hit = one[0] }
+      if (hit){ docs = [hit, ...docs.filter(d => d.id !== linked)] }
+    }
     drawFilters(); render();
+    if (linked && !refresh.scrolled){ refresh.scrolled = true; document.getElementById("s-" + linked)?.scrollIntoView({ block: "center" }) }
   } catch {
     $("#feed").replaceChildren(Object.assign(document.createElement("li"), { className: "empty", textContent: "Couldn't load snippets just now. Pull to refresh or try again in a moment." }));
   }
@@ -115,6 +176,8 @@ function setOrder(o){
   [["sortNew","new"],["sortTop","top"],["shuffle","shuffle"]].forEach(([id,v]) => $("#"+id).setAttribute("aria-pressed", o === v));
   render();
 }
+$("#reportbtn").onclick = () => setReportMode(true);
+$("#reportcancel").onclick = () => setReportMode(false);
 $("#sortNew").onclick = () => setOrder("new");
 $("#sortTop").onclick = () => setOrder("top");
 $("#shuffle").onclick = () => setOrder("shuffle");

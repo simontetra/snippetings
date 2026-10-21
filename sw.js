@@ -1,5 +1,5 @@
 // Keeps the app shell available offline; snippets always come fresh from the network.
-const CACHE = "snippetings-v3";
+const CACHE = "snippetings-v4";
 const SHELL = ["/", "/index.html", "/style.css", "/app.js", "/config.js", "/manifest.webmanifest", "/icons/icon-192.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {

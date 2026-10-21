@@ -76,12 +76,17 @@
       </div>
     </div>
     <div class="chips" id="filters" role="group" aria-label="Filter by place"></div>
+    <div class="reportbar" id="reportbar" role="status" hidden>
+      <span>Find the snippet that breaks the rules, then tap <b>Report this</b> under it.</span>
+      <button class="textbtn" id="reportcancel" type="button">Cancel</button>
+    </div>
     <ul id="feed"><li class="empty">Loading snippets…</li></ul>
   </section>
 
   <footer>
-    <p>Snippetings is anonymous. We don't ask for names or accounts. Spotted something unkind? Tap <em>Report</em> and it's taken down after a few reports.</p>
-    <p>Snippets are posted by visitors and aren't written or endorsed by Snippetings. Everything posted must be legal. <a href="/terms.html">Terms and house rules</a></p>
+    <p>Snippetings is anonymous. We don't ask for names or accounts.</p>
+    <p>Snippets are posted by visitors and aren't written or endorsed by Snippetings. Everything posted must be legal.</p>
+    <p class="footlinks"><a href="/terms.html">Terms and house rules</a> <span aria-hidden="true">·</span> <button class="textbtn" id="reportbtn" type="button">Report a snippet</button></p>
   </footer>
 </div>
 <script src="/config.js"></script>

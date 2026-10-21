@@ -101,3 +101,16 @@ footer p{margin:0;max-width:60ch}
 .rules a,footer a{color:var(--link)}
 footer{display:grid;gap:8px}
 .tag{margin-top:8px}
+
+/* Share + footer report */
+.act.share{display:inline-flex;align-items:center;gap:5px}
+.act.share[aria-expanded="true"]{color:var(--ink);border-color:var(--rule)}
+.sharemenu{display:flex;flex-wrap:wrap;gap:6px}
+.sharemenu a,.sharemenu button{font:500 .78rem/1 var(--mono);color:var(--ink);background:var(--card);border:1px solid var(--rule);
+  border-radius:999px;padding:8px 11px;text-decoration:none;cursor:pointer}
+.sharemenu a:hover,.sharemenu button:hover{border-color:var(--ticket)}
+.snip.linked blockquote{background:color-mix(in srgb,var(--ticket) 30%,transparent);border-radius:6px;padding:4px 8px;margin-inline:-8px}
+.reportbar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;margin:0 0 18px;
+  padding:12px 14px;border:1px dashed var(--rule);border-radius:8px;font-size:.92rem}
+.footlinks{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.footlinks .textbtn{color:var(--muted);font:inherit;text-decoration:underline;text-underline-offset:3px;padding:0}
