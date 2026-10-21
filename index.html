@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Snippetings</title>
+<meta name="description" content="Little bits of overheard life, from buses, queues and waiting rooms. Funny, human, never unkind. Always anonymous.">
+<meta name="theme-color" content="#F2F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15181F" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Snippetings">
+<meta property="og:description" content="Little bits of overheard life. Funny, human, never unkind.">
+<meta property="og:image" content="/icons/og.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Snippetings">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400;1,7..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 class="mark"><span>Snippet</span>ings</h1>
+    <p class="tag">Little bits of overheard life, from buses, queues and waiting rooms. Funny, human, never unkind. Always anonymous.</p>
+  </header>
+
+  <form id="compose" novalidate>
+    <h2>What did you overhear?</h2>
+    <div class="field">
+      <label class="label" for="text">The snippet</label>
+      <textarea id="text" maxlength="280" placeholder="My Mum had an appointment for her memory on Monday. But she forgot it."></textarea>
+    </div>
+    <div class="field">
+      <span class="label" id="setlbl">Where were you?</span>
+      <div class="chips" id="settings" role="group" aria-labelledby="setlbl"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label class="label" for="place">Place (optional)</label>
+        <input type="text" id="place" maxlength="40" placeholder="GP surgery"></div>
+      <div class="field"><label class="label" for="when">When (optional)</label>
+        <input type="text" id="when" maxlength="30" placeholder="This morning"></div>
+    </div>
+    <p class="rules">No names, no swearing, nothing that pokes fun at who someone is. Leave out anything that could identify a person.</p>
+    <div class="foot">
+      <span class="count" id="count">0 / 280</span>
+      <button class="btn" id="send" type="submit">Share snippet</button>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </form>
+
+  <section>
+    <div class="feedhead">
+      <h2>Overheard lately</h2>
+      <div class="sorts" role="group" aria-label="Order">
+        <button class="textbtn" id="sortNew" type="button" aria-pressed="true">Newest</button>
+        <button class="textbtn" id="sortTop" type="button" aria-pressed="false">Most smiles</button>
+        <button class="textbtn" id="shuffle" type="button" aria-pressed="false">Shuffle</button>
+      </div>
+    </div>
+    <div class="chips" id="filters" role="group" aria-label="Filter by place"></div>
+    <ul id="feed"><li class="empty">Loading snippets…</li></ul>
+  </section>
+
+  <footer>
+    <p>Snippetings is anonymous. We don't ask for names or accounts. Spotted something unkind? Tap <em>Report</em> and it's taken down after a few reports.</p>
+  </footer>
+</div>
+<script src="/config.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
